@@ -1,0 +1,190 @@
+1.Git的简单配置
+
+	1.1 Git最基本的配置
+
+		每笔提交的作者信息，包括姓名和邮箱
+
+		e.g.
+
+		git config --globaluser.name liwei
+
+		git config --globaluser.email uestc_lw@163.com
+
+	1.2 Git配置的三个级别
+
+		git配置的三个级别及优先级：
+
+		--local(针对当前用户) > --global(针对当前用户) > --local(针对当前仓库)
+
+	1.3 Git配置的增删改查
+
+		增加：git config --global --add user.name lilong
+
+		删除：git config --global --unset user.name lilong
+
+		修改：git config --global user.name lilong
+
+	1.4 为Git命令配置别名
+
+		git config alias.co checkout
+
+		git config alias.br branch
+
+		git config alias.ststatus
+
+		git config alias.ciconfig
+
+2 Git基本的工作流程
+
+	2.1 Git中的四种对象及关系
+
+		a. blob指文本文件或二进制文件
+
+		b. tree可理解为一种目录结构
+
+		c. commit通常来说，表示一次历史提交
+
+		d．tag通常来说，指向一个固定的历史提交，HEAD就是一个tag
+
+	2.2 Git仓库
+
+		Git仓库分为裸仓库和非裸仓库。其中，裸仓库是指没有工作区的仓库，通常用在服务器中方便其他用户进行。
+
+	2.2.1 Git仓库的初始化
+		
+		Git仓库的初始化可由git init和git clone两种命令实现
+
+		a. git init
+
+			初始化非裸仓库：git init [repo_name]
+
+			初始化裸仓库：git init --bare [repo_name]
+
+		b. git clone
+
+			该命令将在当前目录创建一个git仓库名，仓库名与clone的仓库名一致。
+
+			git clone [remote_repo_name]
+
+
+	2.3 Git基本的工作流程
+	
+		Git维护三个区域，分别为工作区（working directory）、暂存区（stagingarea）和历史记录区（history repository），git的所有操作都围绕以上三个区域进行。
+
+	2.3.1 git add和git commit
+
+		git add a.txtb.bin
+
+		git commit –m “adda.txt and b.bin”
+
+	2.3.2 git rm
+
+		git rm a.txt       该命令同时删除工作区和暂存区的a.txt文件
+
+		git rm --cached a.txt 该命令只删除暂存区中的a.txt
+
+	2.3.3 git mv
+	
+		git rm a.txt b.txt    该命令同时修改工作区和暂存区的文件名
+
+	2.3.4 .gitignore文件
+	
+		.gitignore文件位于仓库的根目录下，该文件中添加的文件名或路径对应的文件将不再被git管理。距离如下：
+
+		*.[oa~]忽略.o，.a，.~文件
+
+		*.pyc
+
+		test.pyt忽略.pyc文件，但文件test.pyc除外。
+
+		foo/忽略foo文件夹下的所有文件
+
+		**/res忽略顶层目录和任意子目录的res文件
+
+3.本地分支与合并
+	
+	切换分支时，会以待切换到分支的最新一次commit还原工作区和暂存区。其实分支名就是该次commit的一个引用，切换分之后，HEAD指针会指向当前分支的最近一次commit。
+
+
+	以最新一次commit为参考创建分支：git branch [branch_name]
+
+	以某次commit为参考创建分支：git branch [branch_name] [commit_id/HEAD/master](只要是一个可以标识一次commit的引用都可以)
+
+	切换分支：git checkout [branch_name]
+
+	切换分支：git checkout [branch_name]
+
+	创建并切换分支：git checkout –b [branch_name]
+
+	合并分支：git merge [branch_name1] 将branch_name1分支合并到当前分支。
+
+	撤销上一次的合并分支：git merge --abort
+
+
+4.查看与对比历史提交记录
+
+	4.1查看历史提交信息
+	
+		git show [commit_id]      查看某次历史提交信息的完整信息
+
+		git show HEAD查看HEAD标签当前指向的提交的完整信息
+
+		git show master 查看master分支最新一次提交的完整信息
+
+		git show master^或git show master~  查看master分支最新一次提交的父提交的完整信息
+
+		git show master^2查看master分支最新一次提交的第二个父提交（也就是父提交的父提交）的完整信息
+
+	4.2查看完整的历史提交（commit）信息
+
+		git log
+
+		可以按键盘空格/字母b键将信息向下/向上翻页，也可以按键盘向上/向下箭头向上/向下按行滚动
+
+		git log –p输出每一个commit之间的差异信息
+
+		git log --stat输出每一个commit之间的差异统计信息
+
+		git log--oneline输出历史commit的简短信息
+
+	4.3 git diff
+
+		git diff显示工作区与暂存区的差异
+
+		git diff --cached显示暂存区与历史版本库的差异
+
+		git diff HEAD~2显示工作区与最新提交第二父提交的差异
+
+		git diff HEAD~2 --a.txt显示工作区与最新提交第二父提交中a.txt文件差异
+
+		git diff –cachedHEAD~1显示暂存区与历史版本库最新提交第一父提交的差异
+
+		git diff HEAD HEAD~2显示HEAD指向的历史提交和其第二父提交之间的差异
+
+		git diff HEAD HEAD~2-- a.txt显示HEAD指向的历史提交和其第二父提交中a.txt之间的差异
+
+5. 撤销操作
+
+	5.1 git checkout（用暂存区或某一次历史提交来还原工作区）
+
+		用于还原工作区
+
+		git checkout --a.txt 撤销工作区中对文件a.txt的修改，实际上是用暂存区中的文件内容覆盖工作区中的文件内容
+
+		git checkout [commit_id]-- a.txt 用对应历史提交的a.txt覆盖工作区和暂存区中的a.txt文件
+
+		git checkoutHEAD -- a.txt 用最新的一次提交覆盖工作区和暂存区中的a.txt文件
+
+	5.2 git reset
+
+		用于还原暂存区
+
+		git reset a.txt 撤销暂存区中对文件a.txt的修改，适用于以下情况：已经把修改后的文件a.txt add到暂存区中，但发现修改错了，需要撤销修改，也就是撤销上一次的git add操作，此时可以使用gitreset命令
+
+		git reset [commit_id]-- a.txt用对应历史提交的a.txt覆盖暂存区中的a.txt文件
+
+6. 重写提交信息
+
+	6.1 git commit --amend
+
+		修改上一次的提交信息，即修改git commit –m “content”中“”中的内容
