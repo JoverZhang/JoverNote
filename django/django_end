@@ -1,0 +1,85 @@
+=====Django后端开发=====
+
+
+1.python安装django
+
+	>> python -m pip install django
+
+2.python安装虚拟环境（virtualenv）
+
+	>>python -m pip install virtualenv
+
+3.创建django项目（会在当前目录自动生成文件夹）
+
+	>>python -m django [projectName]
+
+4.创建virtualenv环境
+	>>virtualenv env
+
+5.进入virtualenv环境
+	>>cd env
+	>>cd Script
+	>>activate
+
+6.开启测试服务器
+	>>cd ..
+	>>cd ..
+	(项目根目录)
+	>>python manage.py runserver 0.0.0.0:8080
+
+
+生成目录：
+
+Project--|
+	和peoject同名的文件夹--|
+		__init__.py			初始化文件，很少配置
+		settings.py			django 全局配置文件
+		urls.py				django url 入口文件
+		wsgi.py				web服务器接口（连接apache或nginx）
+	manage.py				django 管理文件
+
+4.创建django APP
+
+在项目根目录下
+	>>python manage.py startapp [APPName]
+
+生成目录：
+
+Project--|
+	和peoject同名的文件夹--|
+		__init__.py			初始化文件，很少配置	
+		settings.py			django 全局配置文件
+		urls.py				django url 入口文件
+		wsgi.py				web服务器接口（连接apache或nginx）
+	manage.py				django 管理文件
+	APPName/--|
+		migrations/			存放model的迁移文件
+		__init__.py			初始化文件
+		admin.py			django自带用户管理系统配置
+		apps.py				app配置
+		models.py			django ORM模型	--- Model
+		tests.py			测试文件（很少用）		
+		urls.py				APP url 入口文件
+		views.py			渲染页面和数据控制---- Controller
+
+
+WEB访问流程 ---> 全局urls.py ---> APP的urls.py ---> APP的views.py ---> 返回给用户
+
+
+
+=====Dos命令简单介绍=====
+
+dir	查看目录下的文件和文件夹
+
+cd xx	进入xx目录
+
+cd ..	返回上一个目录
+
+
+=====HTTP协议的GET和POST=====
+
+GET 安全性比较低，传递的数据有限，1k或2k，只发起一次TCP连接
+POST 安全性比较高，理论上无限制传递的数据大小，一般发起两次TCP连接
+
+
+
